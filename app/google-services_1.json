@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "1083022591041",
+    "firebase_url": "https://roomies-f49d0-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "roomies-f49d0",
+    "storage_bucket": "roomies-f49d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083022591041:android:43407fd5dad1e4664bf2c0",
+        "android_client_info": {
+          "package_name": "com.example.Roomies"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsJ9iQOCULc0ekT6yuWf7TPG4gGmz7eeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083022591041:android:7b3a2595d36a1ede4bf2c0",
+        "android_client_info": {
+          "package_name": "com.rodriguezalonso.rommiesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsJ9iQOCULc0ekT6yuWf7TPG4gGmz7eeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
