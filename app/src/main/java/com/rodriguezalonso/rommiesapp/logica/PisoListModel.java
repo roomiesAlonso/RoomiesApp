@@ -1,6 +1,8 @@
 package com.rodriguezalonso.rommiesapp.logica;
 
-public class PisoListModel {
+import java.io.Serializable;
+
+public class PisoListModel implements Serializable {
     private String direccion;
     private String contacto;
     private String habitaciones;
@@ -17,13 +19,17 @@ public class PisoListModel {
     }
 
     public static PisoListModel parser(String txt) {
-        String[] datos = new String[3];
-        datos = txt.split(";");
-        String ciudad=datos[0];
-        String direccion = datos[1];
-        String habitaciones = " " + datos[2];
-        String contacto = " " + datos[3];
-        return new PisoListModel(ciudad,direccion, contacto, habitaciones);
+        try {
+            String[] datos = new String[4];
+            datos = txt.split(";");
+            String ciudad = datos[0];
+            String direccion = datos[1];
+            String habitaciones = " " + datos[2];
+            String contacto =  datos[3];
+            return new PisoListModel(ciudad, direccion, contacto, habitaciones);
+        }catch (Exception e){
+            return null;
+        }
     }
     public static String[] filtrado(String txt){
         return txt.split(";");
@@ -51,5 +57,11 @@ public class PisoListModel {
 
     public String getCiudad() {
         return ciudad;
+    }
+
+
+    public String serialize(){
+        return getCiudad() + ";" +
+                getDireccion().toString() +";"+getHabitaciones()+";"+getContacto();
     }
 }

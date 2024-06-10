@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,37 +31,16 @@ public class ApartmentEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment_edit);
         Intent intent = getIntent();
+        piso= (PisoListModel) intent.getSerializableExtra("Piso");
         correo = intent.getStringExtra("Correo");
+        idPiso = intent.getStringExtra("idPiso");
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        buttonContinuar = findViewById(R.id.buttonContinuarP);
-        buttonCancelar = findViewById(R.id.buttonCancelarEP);
         editTextCiudad = findViewById(R.id.editTextCiudadP);
         editTextDireccion = findViewById(R.id.editTextDireccion);
         editTextNHabitaciones = findViewById(R.id.editTextHabitaciones);
-        cargarPisos();
         cargarDatosPiso();
     }
 
-    public void cargarPisos(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Pisos");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String txt = ds.getValue().toString();
-                    PisoListModel p = PisoListModel.parser(txt);
-                    if(p.getContacto().equals(correo)){
-                        piso=p;
-                        idPiso=ds.getKey();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ApartmentEditActivity.this,"Error al cargar los pisos",Toast.LENGTH_LONG).show();
-            }
-        });
-    }
     public void cargarDatosPiso(){
         if(piso!=null){
             editTextCiudad.setText(piso.getCiudad());
@@ -68,16 +48,22 @@ public class ApartmentEditActivity extends AppCompatActivity {
             editTextNHabitaciones.setText(piso.getHabitaciones());
         }
     }
+
     public void cancelar(View view){
         Intent intent = new Intent(ApartmentEditActivity.this, AppActivity.class);
         startActivity(intent);
         finish();
     }
     public void continuar(View view) {
-        String piso = "";
+        String piso_txt="";
         if(comprobarCampos()){
-            piso = crearPiso();
-            mDatabase.child("Pisos").push().setValue(piso + ";" + correo);
+            piso_txt = crearPiso();
+            if (idPiso==null){
+                mDatabase.child("Pisos").push().setValue(piso_txt + ";" + correo);
+            }
+            else {
+                mDatabase.child("Pisos").child(idPiso).setValue(piso_txt + ";" + correo);
+            }
             Intent intent = new Intent(ApartmentEditActivity.this, AppActivity.class);
             startActivity(intent);
             finish();
@@ -97,6 +83,7 @@ public class ApartmentEditActivity extends AppCompatActivity {
             return true;
         }
     }
+
     private String crearPiso(){
         return editTextCiudad.getText().toString() + ";" +
                 editTextDireccion.getText().toString() + ";" +

@@ -41,7 +41,8 @@ public class AppActivity extends AppCompatActivity {
     private FirebaseUser user;
     private Usuario usuario=null;
     private AlertDialog dialog;
-    private String idUsuario="", correo="";
+    private String idUsuario="", idPiso=null, correo="";
+    private PisoListModel pisoUsuario=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,6 @@ public class AppActivity extends AppCompatActivity {
         cargarPisosFirebase();
 
         new Handler().postDelayed(() -> {
-            Toast.makeText(this,"Adaptamos",Toast.LENGTH_SHORT).show();
             adapter = new PisoAdapter(this, listaPisos);
             listViewPisos.setAdapter(adapter);
         }, 4000);
@@ -70,7 +70,13 @@ public class AppActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String txt = ds.getValue().toString();
                     PisoListModel p = PisoListModel.parser(txt);
-                    listaPisos.add(p);
+                    if (p!=null) {
+                        listaPisos.add(p);
+                        if (p.getContacto().equals(correo)) {
+                            idPiso = ds.getKey();
+                            pisoUsuario=p;
+                        }
+                    }
                 }
             }
             @Override
@@ -121,12 +127,14 @@ public class AppActivity extends AppCompatActivity {
     }
     public void editarPerfil(View view) {
         Intent intent = new Intent(AppActivity.this, ProfileEditActivity.class);
-        intent.putExtra("Correo",correo);
+
         startActivity(intent);
     }
     public void editarPiso(View view) {
         Intent intent = new Intent(AppActivity.this, ApartmentEditActivity.class);
+        intent.putExtra("idPiso",idPiso);
         intent.putExtra("Correo",correo);
+        intent.putExtra("Piso",pisoUsuario);
         startActivity(intent);
     }
     public void cerrarSesion(View view) {
