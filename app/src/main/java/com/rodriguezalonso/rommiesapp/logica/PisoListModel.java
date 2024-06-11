@@ -3,10 +3,7 @@ package com.rodriguezalonso.rommiesapp.logica;
 import java.io.Serializable;
 
 public class PisoListModel implements Serializable {
-    private String direccion;
-    private String contacto;
-    private String habitaciones;
-    private String ciudad;
+    private String direccion, contacto, habitaciones, ciudad;
 
     public PisoListModel(){
 
@@ -18,6 +15,12 @@ public class PisoListModel implements Serializable {
         this.habitaciones = habitaciones;
     }
 
+    /**
+     * Método para crear un objeto PisoListModel
+     * a partir del string recibido desde Firebase
+     * @param txt con el String de los datos de Firebase
+     * @return devuelve un PisoListModel nuevo
+     */
     public static PisoListModel parser(String txt) {
         try {
             String[] datos = new String[4];
@@ -31,9 +34,7 @@ public class PisoListModel implements Serializable {
             return null;
         }
     }
-    public static String[] filtrado(String txt){
-        return txt.split(";");
-    }
+
     public String getDireccion() {
         return direccion;
     }
@@ -58,10 +59,7 @@ public class PisoListModel implements Serializable {
     public String getCiudad() {
         return ciudad;
     }
-
-
-    public String serialize(){
-        return getCiudad() + ";" +
-                getDireccion().toString() +";"+getHabitaciones()+";"+getContacto();
+    public void setCiudad(String ciudad){
+        this.ciudad=ciudad;
     }
 }

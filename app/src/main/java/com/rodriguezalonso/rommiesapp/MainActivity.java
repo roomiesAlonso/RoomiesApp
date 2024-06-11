@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private ActionBar actionBar;
     private Button buttonLogin, buttonSignin;
-    private FirebaseAuth autentificacion;
-    boolean firebaseCorrect=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +40,15 @@ public class MainActivity extends AppCompatActivity {
         buttonSignin = binding.buttonSignin;
     }
 
+    /**
+     * Método onClick() del botón de inicio de sesión
+     * que abre un prompt para meter los datos e iniciar sesión
+     * @param view
+     */
     public void promptLogin(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        /**
-         * Le paso un .xml que creé para mostrar
-         * el prompt como a mí me interesa
-         */
+        //Le paso un .xml que creé para mostrar el prompt como a mí me interesa
         View v = inflater.inflate(R.layout.prompt_login, null);
         builder.setView(v);
         Button cancelar = v.findViewById(R.id.buttonCancel);
@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         );
         aceptar.setOnClickListener(
                 new View.OnClickListener() {
+                    /**
+                     * Método onClick() para continuar con el inicio de sesión
+                     * @param v
+                     */
                     @Override
                     public void onClick(View v) {
                         String usuario = user.getText().toString();
@@ -80,13 +84,15 @@ public class MainActivity extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
     }
+    /**
+     * Método onClick() del botón de registro de cuenta
+     * que abre un prompt para meter los datos y registrarse
+     * @param view
+     */
     public void promptSignin(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        /**
-         * Le paso un .xml que creé para mostrar
-         * el prompt como a mí me interesa
-         */
+        //Le paso un .xml que creé para mostrar el prompt como a mí me interesa
         View v = inflater.inflate(R.layout.prompt_signin, null);
         builder.setView(v);
         Button cancelar = v.findViewById(R.id.buttonCancel);
@@ -108,12 +114,15 @@ public class MainActivity extends AppCompatActivity {
         );
         aceptar.setOnClickListener(
                 new View.OnClickListener() {
+                    /**
+                     * Método onClick() para continuar con el registro
+                     * @param v
+                     */
                     @Override
                     public void onClick(View v) {
                         String usuario = user.getText().toString();
                         String contraseña1 = password.getText().toString();
-                       String contraseña2 = password2.getText().toString();
-
+                        String contraseña2 = password2.getText().toString();
                         getUsuarioSignin(usuario,contraseña1, contraseña2);
                     }
                 }
@@ -121,6 +130,12 @@ public class MainActivity extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
     }
+
+    /**
+     * Método para iniciar sesión en Firebase
+     * @param usuario correo del usuario para iniciar sesión
+     * @param contraseña contraseña del usuario
+     */
     private void getUsuarioLogin(String usuario,String contraseña){
         FirebaseAuth autentificacion = FirebaseAuth.getInstance();
         autentificacion.signInWithEmailAndPassword(usuario, contraseña).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -128,17 +143,25 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Usuario valido", Toast.LENGTH_SHORT).show();
-
                     Intent intent = new Intent(MainActivity.this, AppActivity.class);
                     startActivity(intent);
-
+                    finish();
                 } else {
                     Toast.makeText(MainActivity.this, "Usuario o contraseña no valido", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-   private void getUsuarioSignin(String usuario, String contraseña1, String contraseña2){
+
+    /**
+     * Método para registrar una cuenta en Firebase
+     * @param usuario correo con el que se registra el usuario
+     * @param contraseña1
+     * @param contraseña2
+     * Las contraseñas deben ser iguales y ser mínimamente fuertes
+     */
+    private void getUsuarioSignin(String usuario, String contraseña1, String contraseña2){
+        //Se comprueba que ambas contraseñas sean iguales
         if(contraseña1.equals(contraseña2)){
             FirebaseAuth autentificacion = FirebaseAuth.getInstance();
             autentificacion.createUserWithEmailAndPassword(usuario, contraseña1)
@@ -146,14 +169,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         startActivity(intent);
+                        finish();
                         Toast.makeText(MainActivity.this, "Usuario registrado ", Toast.LENGTH_SHORT).show();
-
-
                     } else {
-                        // If sign in fails, display a message to the user.
                         Toast.makeText(MainActivity.this, "Usuario no registrado", Toast.LENGTH_SHORT).show();
                     }
                 }

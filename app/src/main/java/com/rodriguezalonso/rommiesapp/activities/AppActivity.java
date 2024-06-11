@@ -38,6 +38,7 @@ public class AppActivity extends AppCompatActivity {
     private PisoAdapter adapter;
     private ArrayList<PisoListModel> listaPisos = new ArrayList<>();
     private DatabaseReference mDatabase;
+    private FirebaseDatabase database;
     private FirebaseUser user;
     private Usuario usuario=null;
     private AlertDialog dialog;
@@ -52,7 +53,10 @@ public class AppActivity extends AppCompatActivity {
         buttonMenu = findViewById(R.id.buttonMenu);
         editTextCiudad = findViewById(R.id.editTextCiudad);
         listViewPisos = findViewById(R.id.listViewPisos);
-        correo=FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        database = FirebaseDatabase.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        correo=user.getEmail();
         usuario = getUsuario(correo);
         cargarPisosFirebase();
 
@@ -127,7 +131,7 @@ public class AppActivity extends AppCompatActivity {
     }
     public void editarPerfil(View view) {
         Intent intent = new Intent(AppActivity.this, ProfileEditActivity.class);
-
+        intent.putExtra("Usuario",usuario);
         startActivity(intent);
     }
     public void editarPiso(View view) {
@@ -162,7 +166,7 @@ public class AppActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        borrarCuenta();
+                        borrarDatos();
                     }
                 }
         );
@@ -171,13 +175,30 @@ public class AppActivity extends AppCompatActivity {
     }
 
     public void borrarCuenta(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            user.delete().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    startActivity(new Intent(AppActivity.this, MainActivity.class));
-                    finish();
-                }
+        user.delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(AppActivity.this, "Cuenta borrada",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AppActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+    }
+    public void borrarDatos(){
+        if(user!=null){
+            DatabaseReference userRef = database.getReference("Usuarios").child(idUsuario);
+            userRef.removeValue().addOnCompleteListener(task1 -> {
+               if(task1.isSuccessful()){
+                   if(idPiso!=null){
+                       DatabaseReference apartmentRef = database.getReference("Pisos").child(idPiso);
+                       apartmentRef.removeValue().addOnCompleteListener(task2 -> {
+                           if(task2.isSuccessful()){
+                               borrarCuenta();
+                           }
+                       });
+                   } else{
+                       borrarCuenta();
+                   }
+               }
             });
         }
     }

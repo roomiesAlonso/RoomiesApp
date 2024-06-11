@@ -24,7 +24,9 @@ public class ApartmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         buttonContinuar = findViewById(R.id.buttonContinuarP);
         buttonOmitir = findViewById(R.id.buttonCancelarEP);
         editTextCiudad = findViewById(R.id.editTextCiudadP);
@@ -33,10 +35,16 @@ public class ApartmentActivity extends AppCompatActivity {
         editTextPiso = findViewById(R.id.editTextPiso);
         editTextNHabitaciones = findViewById(R.id.editTextHabitaciones);
     }
+
+    /**
+     * Método onClick() para finalizar la creación del piso del usuario
+     * @param view
+     */
     public void continuar(View view) {
         String piso = "";
         if(comprobarCampos()){
             piso = crearPiso();
+            //Crea un nuevo registro de piso en Firebase
             mDatabase.child("Pisos").push().setValue(piso + ";" + correo);
             Intent intent = new Intent(ApartmentActivity.this, AppActivity.class);
             startActivity(intent);
@@ -47,11 +55,21 @@ public class ApartmentActivity extends AppCompatActivity {
             Toast.makeText(ApartmentActivity.this, "Faltan datos", Toast.LENGTH_SHORT).show();
         }
     }
+    /**
+     * Método onClick() para omitir la creación del piso
+     * ya que no es necesario crear uno
+     * @param view
+     */
     public void omitir(View view){
         Intent intent = new Intent(ApartmentActivity.this, AppActivity.class);
         startActivity(intent);
         finish();
     }
+
+    /**
+     * Método para comprobar que no hay campos vacíos
+     * @return true si no hay campos vacíos y false si hay al menos uno vacío
+     */
     private boolean comprobarCampos(){
         if(editTextCiudad.getText().toString()==null ||
             editTextCalle.getText().toString()==null ||
@@ -63,6 +81,10 @@ public class ApartmentActivity extends AppCompatActivity {
             return true;
         }
     }
+    /**
+     * Crea un String con los datos del piso para poder añadirlo a Firebase
+     * @return
+     */
     private String crearPiso(){
         return editTextCiudad.getText().toString() + ";" +
                 editTextCalle.getText().toString() + " " +

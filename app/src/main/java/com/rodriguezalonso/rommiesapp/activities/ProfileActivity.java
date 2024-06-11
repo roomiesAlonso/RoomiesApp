@@ -29,12 +29,14 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         editTextNombre = findViewById(R.id.editTextNombre);
         editTextApellidos = findViewById(R.id.editTextApellidos);
         editTextEdad = findViewById(R.id.editTextEdad);
         editTextCiudad = findViewById(R.id.editTextCiudad);
         editTextCentroEstudio = findViewById(R.id.editTextCentroEstudio);
         editTextCorreo = findViewById(R.id.editTextCorreo);
+
         try {
             autentificacion = FirebaseAuth.getInstance();
             mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -43,42 +45,34 @@ public class ProfileActivity extends AppCompatActivity {
         } catch(Exception e){
             Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
     }
+
+    /**
+     * Método onClick() para finalizar la creación del perfil del usuario
+     * @param view
+     */
     public void continuar(View view) {
         String usuario = "";
         if(comprobarCampos()){
             usuario = crearUsuario();
+            //Crea un nuevo registro de usuario en FIrebase
             mDatabase.child("Usuarios").push().setValue(usuario);
             Intent intent = new Intent(ProfileActivity.this, ApartmentActivity.class);
             startActivity(intent);
+            finish();
             Toast.makeText(ProfileActivity.this, "Usuario creado", Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(ProfileActivity.this, "Faltan datos", Toast.LENGTH_SHORT).show();
         }
     }
-    private boolean comprobarCampos(){
-        if(editTextNombre.getText().toString()==null ||
-            editTextApellidos.getText().toString()==null ||
-            editTextCorreo.getText().toString()==null ||
-            editTextEdad.getText().toString()==null ||
-            editTextCiudad.getText().toString()==null ||
-            editTextCentroEstudio.getText().toString()==null){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-    private String crearUsuario(){
-        return editTextNombre.getText().toString() + " " +
-            editTextApellidos.getText().toString() + ";" +
-            editTextEdad.getText().toString() + ";" +
-            editTextCiudad.getText().toString() + ";" +
-            editTextCentroEstudio.getText().toString() + ";" +
-            editTextCorreo.getText().toString();
-    }
+    /**
+     * Método onClick() para cancelar la creación del perfil
+     * Borra la cuenta de Firebase para que no se quede en el aire
+     * @param view
+     */
     public void cancelar(View view) {
         FirebaseUser user = autentificacion.getCurrentUser();
         if(user!=null){
@@ -95,5 +89,36 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * Método para comprobar que no hay campos vacíos
+     * @return true si no hay campos vacíos y false si hay al menos uno vacío
+     */
+    private boolean comprobarCampos(){
+        if(editTextNombre.getText().toString()==null ||
+            editTextApellidos.getText().toString()==null ||
+            editTextCorreo.getText().toString()==null ||
+            editTextEdad.getText().toString()==null ||
+            editTextCiudad.getText().toString()==null ||
+            editTextCentroEstudio.getText().toString()==null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    /**
+     * Crea un String con los datos del usuario para poder añadirlo a Firebase
+     * @return
+     */
+    private String crearUsuario(){
+        return editTextNombre.getText().toString() + " " +
+            editTextApellidos.getText().toString() + ";" +
+            editTextEdad.getText().toString() + ";" +
+            editTextCiudad.getText().toString() + ";" +
+            editTextCentroEstudio.getText().toString() + ";" +
+            editTextCorreo.getText().toString();
     }
 }

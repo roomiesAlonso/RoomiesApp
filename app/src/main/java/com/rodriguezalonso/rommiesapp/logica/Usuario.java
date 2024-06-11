@@ -51,6 +51,12 @@ public class Usuario implements Serializable {
         this.correo = correo;
     }
 
+    /**
+     * Método para crear un objeto Usuario
+     * a partir del string recibido desde Firebase
+     * @param txt con el String de los datos de Firebase
+     * @return devuelve un Usuario nuevo
+     */
     public static Usuario parser(String txt){
         try {
             String[] datos = new String[5];

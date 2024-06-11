@@ -29,6 +29,14 @@ public class PisoAdapter extends BaseAdapter {
         TextView habitaciones;
     }
 
+    /**
+     * Método para crear y/o actualizar el ViewHolder del piso
+     * para luego listarlo en el ListView del AppActivity
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         ViewHolder holder = null;

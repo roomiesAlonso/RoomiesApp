@@ -22,7 +22,6 @@ import com.rodriguezalonso.rommiesapp.logica.PisoListModel;
 public class ApartmentEditActivity extends AppCompatActivity {
     private String correo="", idPiso="";
     private PisoListModel piso=null;
-    private Button buttonContinuar, buttonCancelar;
     private EditText editTextCiudad, editTextDireccion, editTextNHabitaciones;
     private DatabaseReference mDatabase;
 
@@ -30,17 +29,25 @@ public class ApartmentEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment_edit);
+
         Intent intent = getIntent();
         piso= (PisoListModel) intent.getSerializableExtra("Piso");
         correo = intent.getStringExtra("Correo");
         idPiso = intent.getStringExtra("idPiso");
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         editTextCiudad = findViewById(R.id.editTextCiudadP);
         editTextDireccion = findViewById(R.id.editTextDireccion);
         editTextNHabitaciones = findViewById(R.id.editTextHabitaciones);
+
         cargarDatosPiso();
     }
 
+    /**
+     * Método para rellenar los editText del activity con los datos del piso
+     * Si no hay piso creado, estarán en blanco
+     */
     public void cargarDatosPiso(){
         if(piso!=null){
             editTextCiudad.setText(piso.getCiudad());
@@ -49,6 +56,10 @@ public class ApartmentEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método onClick()
+     * @param view
+     */
     public void cancelar(View view){
         Intent intent = new Intent(ApartmentEditActivity.this, AppActivity.class);
         startActivity(intent);
