@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     /**
      * Método para registrar una cuenta en Firebase
      * @param usuario correo con el que se registra el usuario

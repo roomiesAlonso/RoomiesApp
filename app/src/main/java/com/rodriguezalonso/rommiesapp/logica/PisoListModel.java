@@ -15,26 +15,6 @@ public class PisoListModel implements Serializable {
         this.habitaciones = habitaciones;
     }
 
-    /**
-     * Método para crear un objeto PisoListModel
-     * a partir del string recibido desde Firebase
-     * @param txt con el String de los datos de Firebase
-     * @return devuelve un PisoListModel nuevo
-     */
-    public static PisoListModel parser(String txt) {
-        try {
-            String[] datos = new String[4];
-            datos = txt.split(";");
-            String ciudad = datos[0];
-            String direccion = datos[1];
-            String habitaciones = " " + datos[2];
-            String contacto =  datos[3];
-            return new PisoListModel(ciudad, direccion, contacto, habitaciones);
-        }catch (Exception e){
-            return null;
-        }
-    }
-
     public String getDireccion() {
         return direccion;
     }
@@ -61,5 +41,25 @@ public class PisoListModel implements Serializable {
     }
     public void setCiudad(String ciudad){
         this.ciudad=ciudad;
+    }
+
+    /**
+     * Método para crear un objeto PisoListModel
+     * a partir del string recibido desde Firebase
+     * @param txt con el String de los datos de Firebase
+     * @return devuelve un PisoListModel nuevo
+     */
+    public static PisoListModel parser(String txt) {
+        try {
+            String[] datos = new String[4];
+            datos = txt.split(";");
+            String ciudad = datos[0];
+            String direccion = datos[1];
+            String habitaciones = " " + datos[2];
+            String contacto =  datos[3];
+            return new PisoListModel(ciudad, direccion, contacto, habitaciones);
+        }catch (Exception e){
+            return null;
+        }
     }
 }

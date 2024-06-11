@@ -29,7 +29,7 @@ public class ApartmentEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment_edit);
-
+        //Recojo los datos del putExtra() del AppActivity
         Intent intent = getIntent();
         piso= (PisoListModel) intent.getSerializableExtra("Piso");
         correo = intent.getStringExtra("Correo");
@@ -57,7 +57,8 @@ public class ApartmentEditActivity extends AppCompatActivity {
     }
 
     /**
-     * Método onClick()
+     * Método onClick() para cancelar la edición del piso
+     * y volver a la anterior pantalla
      * @param view
      */
     public void cancelar(View view){
@@ -65,6 +66,12 @@ public class ApartmentEditActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    /**
+     * Método onClick() para finalizar la edición de los datos del piso
+     * Si ya existe uno, actualiza los datos, sino, crea un piso nuevo
+     * @param view
+     */
     public void continuar(View view) {
         String piso_txt="";
         if(comprobarCampos()){
@@ -85,6 +92,10 @@ public class ApartmentEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método para comprobar que no hay campos vacíos
+     * @return true si no hay campos vacíos y false si hay al menos uno vacío
+     */
     private boolean comprobarCampos(){
         if(editTextCiudad.getText().toString()==null ||
                 editTextDireccion.getText().toString()==null ||
@@ -95,6 +106,11 @@ public class ApartmentEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Crea un String con los datos del piso
+     * para poder añadirlo o modificarlo en Firebase
+     * @return
+     */
     private String crearPiso(){
         return editTextCiudad.getText().toString() + ";" +
                 editTextDireccion.getText().toString() + ";" +

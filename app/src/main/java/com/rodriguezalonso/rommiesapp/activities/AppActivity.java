@@ -66,6 +66,10 @@ public class AppActivity extends AppCompatActivity {
         }, 4000);
     }
 
+    /**
+     * Método para leer los pisos en Firebase y añadirlos a un ArrayList
+     * para poder hacer operaciones más fácilmente
+     */
     private void cargarPisosFirebase(){
         DatabaseReference ref =FirebaseDatabase.getInstance().getReference("Pisos");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -76,6 +80,7 @@ public class AppActivity extends AppCompatActivity {
                     PisoListModel p = PisoListModel.parser(txt);
                     if (p!=null) {
                         listaPisos.add(p);
+                        //Se hace una comprobación para ver si el usuario tiene un piso asignado
                         if (p.getContacto().equals(correo)) {
                             idPiso = ds.getKey();
                             pisoUsuario=p;
@@ -90,6 +95,11 @@ public class AppActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método para leer los usuarios en Firebase y devolver el perfil del usuario actual
+     * @param correo
+     * @return
+     */
     public Usuario getUsuario(String correo){
         DatabaseReference ref =null;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -119,6 +129,10 @@ public class AppActivity extends AppCompatActivity {
         return usuario;
     }
 
+    /**
+     * Método onClick() para mostrar una lista de pisos en función de la ciudad indicada
+     * @param view
+     */
     public void mostrarPisos(View view) {
         String ciudad = editTextCiudad.getText().toString();
         ArrayList<PisoListModel> listaFiltrada = new ArrayList<>();
@@ -129,11 +143,26 @@ public class AppActivity extends AppCompatActivity {
         adapter = new PisoAdapter(this, listaFiltrada);
         listViewPisos.setAdapter(adapter);
     }
+
+    /**
+     * Método onClick() para abrir la pantalla de edición del perfil
+     * Se pasan el usuario y su id junto con el correo para operar
+     * más fácilmente
+     * @param view
+     */
     public void editarPerfil(View view) {
         Intent intent = new Intent(AppActivity.this, ProfileEditActivity.class);
+        intent.putExtra("idUsuario",idUsuario);
         intent.putExtra("Usuario",usuario);
+        intent.putExtra("Correo",correo);
         startActivity(intent);
     }
+    /**
+     * Método onClick() para abrir la pantalla de edición del piso
+     * Se pasan el piso y su id junto con el correo para operar
+     * más fácilmente
+     * @param view
+     */
     public void editarPiso(View view) {
         Intent intent = new Intent(AppActivity.this, ApartmentEditActivity.class);
         intent.putExtra("idPiso",idPiso);
@@ -141,12 +170,21 @@ public class AppActivity extends AppCompatActivity {
         intent.putExtra("Piso",pisoUsuario);
         startActivity(intent);
     }
+    /**
+     * Método onClick() para cerrar la sesión actual del usuario
+     * @param view
+     */
     public void cerrarSesion(View view) {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(AppActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
+    /**
+     * Método onClick() para abrir un prompt antes de borrar la cuenta
+     * El prompt es a modo de confirmación ante un cambio irreversible
+     * @param view
+     */
     public void promptBorrarCuenta(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AppActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -174,6 +212,10 @@ public class AppActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Método para borrar la cuenta del usuario de Firebase
+     * y volver a la pantalla inicial
+     */
     public void borrarCuenta(){
         user.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -183,6 +225,10 @@ public class AppActivity extends AppCompatActivity {
             }
         });
     }
+    /**
+     * Método para borrar los datos del usuario antes de borrar la cuenta definitivamente
+     * Primero borra los datos del perfil y luego, si existe, los datos del piso
+     */
     public void borrarDatos(){
         if(user!=null){
             DatabaseReference userRef = database.getReference("Usuarios").child(idUsuario);
