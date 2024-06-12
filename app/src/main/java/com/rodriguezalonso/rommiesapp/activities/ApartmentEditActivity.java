@@ -78,14 +78,15 @@ public class ApartmentEditActivity extends AppCompatActivity {
             piso_txt = crearPiso();
             if (idPiso==null){
                 mDatabase.child("Pisos").push().setValue(piso_txt + ";" + correo);
+                Toast.makeText(ApartmentEditActivity.this, "Piso creado", Toast.LENGTH_SHORT).show();
             }
             else {
                 mDatabase.child("Pisos").child(idPiso).setValue(piso_txt + ";" + correo);
+                Toast.makeText(ApartmentEditActivity.this, "Piso actualizado", Toast.LENGTH_SHORT).show();
             }
             Intent intent = new Intent(ApartmentEditActivity.this, AppActivity.class);
             startActivity(intent);
             finish();
-            Toast.makeText(ApartmentEditActivity.this, "Piso creado", Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(ApartmentEditActivity.this, "Faltan datos", Toast.LENGTH_SHORT).show();

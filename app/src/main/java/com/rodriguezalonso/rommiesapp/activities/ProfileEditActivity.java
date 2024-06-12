@@ -101,6 +101,9 @@ public class ProfileEditActivity extends AppCompatActivity {
     public void actualizar(View view){
         if(comprobarCampos()){
             mDatabase.child("Usuarios").child(id).setValue(actualizarUsuario());
+            Intent intent = new Intent(ProfileEditActivity.this, AppActivity.class);
+            startActivity(intent);
+            finish();
         }
         else{
             Toast.makeText(ProfileEditActivity.this, "Faltan datos", Toast.LENGTH_SHORT).show();

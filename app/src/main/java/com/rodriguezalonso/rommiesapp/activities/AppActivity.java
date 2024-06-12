@@ -213,6 +213,34 @@ public class AppActivity extends AppCompatActivity {
     }
 
     /**
+     * Método para borrar los datos del usuario antes de borrar la cuenta definitivamente
+     * Primero borra los datos del perfil y luego, si existe, los datos del piso
+     */
+    public void borrarDatos(){
+        if(user!=null){
+            DatabaseReference userRef = database.getReference("Usuarios").child(idUsuario);
+            userRef.removeValue().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful())
+                borrarDatosPiso();
+            });
+        }
+    }
+    /**
+     * Método para borrar los datos del piso del usuario en caso de tener uno en su cuenta
+     */
+    public void borrarDatosPiso() {
+        if (idPiso != null) {
+            DatabaseReference apartmentRef = database.getReference("Pisos").child(idPiso);
+            apartmentRef.removeValue().addOnCompleteListener(task2 -> {
+                if (task2.isSuccessful()) {
+                    borrarCuenta();
+                }
+            });
+        } else{
+            borrarCuenta();
+        }
+    }
+    /**
      * Método para borrar la cuenta del usuario de Firebase
      * y volver a la pantalla inicial
      */
@@ -224,28 +252,5 @@ public class AppActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-    /**
-     * Método para borrar los datos del usuario antes de borrar la cuenta definitivamente
-     * Primero borra los datos del perfil y luego, si existe, los datos del piso
-     */
-    public void borrarDatos(){
-        if(user!=null){
-            DatabaseReference userRef = database.getReference("Usuarios").child(idUsuario);
-            userRef.removeValue().addOnCompleteListener(task1 -> {
-               if(task1.isSuccessful()){
-                   if(idPiso!=null){
-                       DatabaseReference apartmentRef = database.getReference("Pisos").child(idPiso);
-                       apartmentRef.removeValue().addOnCompleteListener(task2 -> {
-                           if(task2.isSuccessful()){
-                               borrarCuenta();
-                           }
-                       });
-                   } else{
-                       borrarCuenta();
-                   }
-               }
-            });
-        }
     }
 }
