@@ -30,21 +30,17 @@ import com.rodriguezalonso.rommiesapp.logica.Usuario;
 import java.util.ArrayList;
 
 public class AppActivity extends AppCompatActivity {
-
-    private final String default_city="Oviedo";
     private Button buttonMenu;
     private EditText editTextCiudad;
     private ListView listViewPisos;
     private PisoAdapter adapter;
     private ArrayList<PisoListModel> listaPisos = new ArrayList<>();
-    private DatabaseReference mDatabase;
     private FirebaseDatabase database;
     private FirebaseUser user;
     private Usuario usuario=null;
     private AlertDialog dialog;
     private String idUsuario="", idPiso=null, correo="";
     private PisoListModel pisoUsuario=null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +114,6 @@ public class AppActivity extends AppCompatActivity {
                             usuario = null;
                         }
                     } catch (Exception e) {
-
                     }
                 }
             }

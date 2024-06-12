@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private ActionBar actionBar;
     private Button buttonLogin, buttonSignin;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

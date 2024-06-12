@@ -24,7 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private String correo;
     private FirebaseAuth autentificacion;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +35,6 @@ public class ProfileActivity extends AppCompatActivity {
         editTextCiudad = findViewById(R.id.editTextCiudad);
         editTextCentroEstudio = findViewById(R.id.editTextCentroEstudio);
         editTextCorreo = findViewById(R.id.editTextCorreo);
-
         try {
             autentificacion = FirebaseAuth.getInstance();
             mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -108,7 +106,6 @@ public class ProfileActivity extends AppCompatActivity {
             return true;
         }
     }
-
     /**
      * Crea un String con los datos del usuario para poder añadirlo a Firebase
      * @return

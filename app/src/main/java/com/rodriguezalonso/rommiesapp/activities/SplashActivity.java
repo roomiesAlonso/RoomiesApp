@@ -11,7 +11,6 @@ import com.rodriguezalonso.rommiesapp.R;
 
 public class SplashActivity extends AppCompatActivity {
     private long time_splash=3000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -19,7 +19,6 @@ public class ApartmentActivity extends AppCompatActivity {
     private EditText editTextCiudad, editTextCalle, editTextPortal, editTextPiso, editTextNHabitaciones;
     private String correo = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     private DatabaseReference mDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
