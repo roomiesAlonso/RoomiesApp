@@ -30,9 +30,9 @@ public class ApartmentEditActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        editTextCiudad = findViewById(R.id.editTextCiudadP);
-        editTextDireccion = findViewById(R.id.editTextDireccion);
-        editTextNHabitaciones = findViewById(R.id.editTextHabitaciones);
+        editTextCiudad = findViewById(R.id.editTextCiudadA);
+        editTextDireccion = findViewById(R.id.editTextCalleAE);
+        editTextNHabitaciones = findViewById(R.id.editTextHabitacionesAE);
 
         cargarDatosPiso();
     }

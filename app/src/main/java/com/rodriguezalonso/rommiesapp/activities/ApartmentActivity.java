@@ -26,13 +26,13 @@ public class ApartmentActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        buttonContinuar = findViewById(R.id.buttonContinuarP);
-        buttonOmitir = findViewById(R.id.buttonCancelarEP);
-        editTextCiudad = findViewById(R.id.editTextCiudadP);
+        buttonContinuar = findViewById(R.id.buttonContinuarA);
+        buttonOmitir = findViewById(R.id.buttonOmitirA);
+        editTextCiudad = findViewById(R.id.editTextCiudadA);
         editTextCalle = findViewById(R.id.editTextCalle);
         editTextPortal = findViewById(R.id.editTextPortal);
         editTextPiso = findViewById(R.id.editTextPiso);
-        editTextNHabitaciones = findViewById(R.id.editTextHabitaciones);
+        editTextNHabitaciones = findViewById(R.id.editTextHabitacionesAE);
     }
 
     /**

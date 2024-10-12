@@ -41,4 +41,6 @@
     <string name="navigation_drawer_close">Navigation drawer close\n</string>
     <string name="menu_editar_piso">Editar Piso</string>
     <string name="direccionEP">Dirección *</string>
+    <string name="metros">Metros² *</string>
+    <string name="alquiler">Alquiler *</string>
 </resources>
