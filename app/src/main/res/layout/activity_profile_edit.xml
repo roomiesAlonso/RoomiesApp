@@ -81,7 +81,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
 
     <Button
-        android:id="@+id/buttonContinuar"
+        android:id="@+id/buttonContinuarLI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/verde"

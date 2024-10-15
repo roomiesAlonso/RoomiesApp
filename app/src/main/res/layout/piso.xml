@@ -5,8 +5,10 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/linearLayoutPiso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="promptAbrirPiso"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         //Le paso un .xml que creé para mostrar el prompt como a mí me interesa
         View v = inflater.inflate(R.layout.prompt_login, null);
         builder.setView(v);
-        Button cancelar = v.findViewById(R.id.buttonCancel);
-        Button aceptar = v.findViewById(R.id.buttonAccept);
+        Button cancelar = v.findViewById(R.id.buttonCancelarLI);
+        Button aceptar = v.findViewById(R.id.buttonContinuarLI);
         EditText user = v.findViewById(R.id.editTextUser);
         EditText password = v.findViewById(R.id.editTextPassword);
         cancelar.setOnClickListener(
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         //Le paso un .xml que creé para mostrar el prompt como a mí me interesa
         View v = inflater.inflate(R.layout.prompt_signin, null);
         builder.setView(v);
-        Button cancelar = v.findViewById(R.id.buttonCancel);
-        Button aceptar = v.findViewById(R.id.buttonAccept);
+        Button cancelar = v.findViewById(R.id.buttonCancelarSI);
+        Button aceptar = v.findViewById(R.id.buttonContinuarSI);
         EditText user = v.findViewById(R.id.editTextUser);
         EditText password = v.findViewById(R.id.editTextPassword);
         EditText password2 = v.findViewById(R.id.editTextPassword2);

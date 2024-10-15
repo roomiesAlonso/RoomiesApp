@@ -1,6 +1,7 @@
 package com.rodriguezalonso.rommiesapp.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -185,8 +186,8 @@ public class AppActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View v = inflater.inflate(R.layout.prompt_confirm_delete, null);
         builder.setView(v);
-        Button cancelar = v.findViewById(R.id.buttonCancel);
-        Button aceptar = v.findViewById(R.id.buttonAccept);
+        Button cancelar = v.findViewById(R.id.buttonCancelarLI);
+        Button aceptar = v.findViewById(R.id.buttonGoogleMaps);
         cancelar.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -247,5 +248,42 @@ public class AppActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * Método onClick() para abrir un prompt antes de borrar la cuenta
+     * El prompt es a modo de confirmación ante un cambio irreversible
+     * @param view
+     */
+    public void promptAbrirPiso(View view) {
+        PisoListModel piso = new PisoListModel();
+        AlertDialog.Builder builder = new AlertDialog.Builder(AppActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View v = inflater.inflate(R.layout.prompt_piso, null);
+        builder.setView(v);
+        Button googleMaps = v.findViewById(R.id.buttonGoogleMaps);
+        googleMaps.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*TO DO
+                        String direccion = piso.getCiudad() + ", " + piso.getCalle() + " " + piso.getPortal();
+                        abrirGoogleMaps(direccion);
+                         */
+                    }
+                }
+        );
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void abrirGoogleMaps(String direccion) {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
     }
 }

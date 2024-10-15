@@ -52,7 +52,7 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <Button
-        android:id="@+id/buttonAccept"
+        android:id="@+id/buttonContinuarSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#54FF5B"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline18" />
 
     <Button
-        android:id="@+id/buttonCancel"
+        android:id="@+id/buttonCancelarSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#F44336"
