@@ -29,10 +29,10 @@ public class ApartmentActivity extends AppCompatActivity {
         buttonContinuar = findViewById(R.id.buttonContinuarA);
         buttonOmitir = findViewById(R.id.buttonOmitirA);
         editTextCiudad = findViewById(R.id.editTextCiudadA);
-        editTextCalle = findViewById(R.id.editTextCalle);
-        editTextPortal = findViewById(R.id.editTextPortal);
-        editTextPiso = findViewById(R.id.editTextPiso);
-        editTextNHabitaciones = findViewById(R.id.editTextHabitacionesAE);
+        editTextCalle = findViewById(R.id.editTextCalleA);
+        editTextPortal = findViewById(R.id.editTextPortalA);
+        editTextPiso = findViewById(R.id.editTextPisoA);
+        editTextNHabitaciones = findViewById(R.id.editTextHabitacionesA);
     }
 
     /**

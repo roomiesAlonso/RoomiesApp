@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline22" />
 
     <EditText
-        android:id="@+id/editTextCalle"
+        android:id="@+id/editTextCalleA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="11"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline25" />
 
     <EditText
-        android:id="@+id/editTextPortal"
+        android:id="@+id/editTextPortalA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="5"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline26" />
 
     <EditText
-        android:id="@+id/editTextPiso"
+        android:id="@+id/editTextPisoA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="5"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline26" />
 
     <EditText
-        android:id="@+id/editTextHabitacionesAE"
+        android:id="@+id/editTextHabitacionesA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="11"
@@ -190,7 +190,7 @@
         app:layout_constraintGuide_percent="0.95" />
 
     <EditText
-        android:id="@+id/editTextAlquiler"
+        android:id="@+id/editTextAlquilerA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="5"
@@ -209,7 +209,7 @@
         app:layout_constraintGuide_percent="0.75" />
 
     <EditText
-        android:id="@+id/editTextMetros"
+        android:id="@+id/editTextMetrosA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="5"

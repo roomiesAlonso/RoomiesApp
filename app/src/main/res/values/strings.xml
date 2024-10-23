@@ -43,4 +43,5 @@
     <string name="direccionEP">Dirección *</string>
     <string name="metros">Metros² *</string>
     <string name="alquiler">Alquiler *</string>
+    <string name="datosPiso">Datos: </string>
 </resources>

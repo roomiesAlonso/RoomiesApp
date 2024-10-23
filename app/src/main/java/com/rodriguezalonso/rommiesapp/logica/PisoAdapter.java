@@ -26,7 +26,7 @@ public class PisoAdapter extends BaseAdapter {
     static class ViewHolder{
         TextView direccion;
         TextView contacto;
-        TextView habitaciones;
+        TextView datos;
     }
 
     /**
@@ -45,16 +45,16 @@ public class PisoAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.direccion = (TextView) convertView.findViewById(R.id.direccion);
             holder.contacto = (TextView) convertView.findViewById(R.id.contacto);
-            holder.habitaciones = (TextView) convertView.findViewById(R.id.habitaciones);
+            holder.datos = (TextView) convertView.findViewById(R.id.datos);
             convertView.setTag(holder);
         }
         else{
             holder = (ViewHolder) convertView.getTag();
         }
         PisoListModel piso = listaPisos.get(position);
-        holder.direccion.setText("Dirección: "+piso.getCiudad()+" " +piso.getDireccion());
+        holder.direccion.setText("Dirección: " + piso.getDireccion());
         holder.contacto.setText("Contacto: "+piso.getContacto());
-        holder.habitaciones.setText("Número de habitaciones: "+piso.getHabitaciones());
+        holder.datos.setText("Datos: "+piso.getDatos());
         return convertView;
     }
 

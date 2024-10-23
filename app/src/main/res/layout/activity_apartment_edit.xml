@@ -7,7 +7,7 @@
     tools:context=".activities.ApartmentActivity">
 
     <EditText
-        android:id="@+id/editTextCiudadA"
+        android:id="@+id/editTextCiudadAE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="11"
@@ -128,7 +128,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonOmitirA"
+        android:id="@+id/buttonCancelarAE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/rojo"
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline31" />
 
     <Button
-        android:id="@+id/buttonContinuarA"
+        android:id="@+id/buttonContinuarAE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/verde"
@@ -209,7 +209,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline40" />
 
     <EditText
-        android:id="@+id/editTextM2AE"
+        android:id="@+id/editTextMetrosAE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="5"

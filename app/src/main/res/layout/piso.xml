@@ -43,10 +43,10 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/habitaciones"
+                android:id="@+id/datos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/n_habitaciones"
+                android:text="@string/datosPiso"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textSize="14sp" />
 
