@@ -47,4 +47,5 @@
     <string name="filtro_alquiler">Alquiler (más baratos primero)</string>
     <string name="filtro_habitaciones">Habitaciones (más habitaciones primero)</string>
     <string name="filtro_metros">Metros² (más metros primero)</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

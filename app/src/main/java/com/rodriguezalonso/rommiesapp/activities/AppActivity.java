@@ -1,5 +1,6 @@
 package com.rodriguezalonso.rommiesapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class AppActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private String idUsuario="", idPiso=null, correo="";
     private PisoListModel pisoUsuario=null;
+    private Activity context=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,13 +149,15 @@ public class AppActivity extends AppCompatActivity {
      */
     public void mostrarPisos(View view) {
         String ciudad = editTextCiudad.getText().toString();
-        ArrayList<PisoListModel> listaFiltrada = new ArrayList<>();
-        for (PisoListModel plm:listaPisos){
-            if (plm.getCiudad().equals(ciudad))
-                listaFiltrada.add(plm);
+        if(ciudad!=null){
+            ArrayList<PisoListModel> listaFiltrada = new ArrayList<>();
+            for (PisoListModel plm:listaPisos){
+                if (plm.getCiudad().equals(ciudad))
+                    listaFiltrada.add(plm);
+            }
+            adapter = new PisoAdapter(this, listaFiltrada);
+            listViewPisos.setAdapter(adapter);
         }
-        adapter = new PisoAdapter(this, listaFiltrada);
-        listViewPisos.setAdapter(adapter);
     }
 
     /**
@@ -288,6 +292,7 @@ public class AppActivity extends AppCompatActivity {
                         //TO DO
                         if(radioButtonAlquiler.isSelected()){
                             ordenarAlquiler(listaPisos);
+                            actualizarPisos();
                             dialog.dismiss();
                         } else if(radioButtonHabitaciones.isSelected()){
                             ordenarHabitaciones(listaPisos);
@@ -303,6 +308,10 @@ public class AppActivity extends AppCompatActivity {
         );
         dialog = builder.create();
         dialog.show();
+    }
+    public void actualizarPisos(){
+        adapter = new PisoAdapter(this, listaPisos);
+        listViewPisos.setAdapter(adapter);
     }
 
     /**
