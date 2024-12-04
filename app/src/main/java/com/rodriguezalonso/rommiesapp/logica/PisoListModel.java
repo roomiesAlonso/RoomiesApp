@@ -1,14 +1,19 @@
 package com.rodriguezalonso.rommiesapp.logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PisoListModel implements Serializable {
-    private String calle, portal, piso, contacto, habitaciones, ciudad, metros, alquiler;
+    private String calle, portal, piso, contacto, ciudad;
+    private int habitaciones, metros, alquiler;
 
     public PisoListModel(){
 
     }
-    public PisoListModel(String ciudad, String calle, String portal, String piso, String metros, String alquiler, String contacto, String habitaciones) {
+    public PisoListModel(String ciudad, String calle, String portal, String piso,
+                int metros, int alquiler, int habitaciones, String contacto) {
         this.calle = calle;
         this.portal = portal;
         this.piso = piso;
@@ -40,20 +45,6 @@ public class PisoListModel implements Serializable {
         this.piso = piso;
     }
 
-    public String getMetros(){
-        return metros;
-    }
-    public void setMetros(String metros){
-        this.metros = metros;
-    }
-
-    public String getAlquiler(){
-        return alquiler;
-    }
-    public void setAlquiler(String alquiler){
-        this.alquiler = alquiler;
-    }
-
     public String getContacto() {
         return contacto;
     }
@@ -61,18 +52,32 @@ public class PisoListModel implements Serializable {
         this.contacto = contacto;
     }
 
-    public String getHabitaciones() {
-        return habitaciones;
-    }
-    public void setHabitaciones(String habitaciones) {
-        this.habitaciones = habitaciones;
-    }
-
     public String getCiudad() {
         return ciudad;
     }
     public void setCiudad(String ciudad){
         this.ciudad=ciudad;
+    }
+
+    public int getHabitaciones(){
+        return habitaciones;
+    }
+    public void setHabitaciones(int habitaciones){
+        this.habitaciones=habitaciones;
+    }
+
+    public int getMetros(){
+        return metros;
+    }
+    public void setMetros(int metros){
+        this.metros=metros;
+    }
+
+    public int getAlquiler(){
+        return alquiler;
+    }
+    public void setAlquiler(int alquiler){
+        this.alquiler=alquiler;
     }
 
     public String getDireccion(){
@@ -96,11 +101,11 @@ public class PisoListModel implements Serializable {
             String calle = datos[1];
             String portal = datos[2];
             String piso = datos[3];
-            String habitaciones = " " + datos[4];
-            String m2 = datos[5];
-            String alquiler = datos[6];
+            int habitaciones = Integer.parseInt(datos[4]);
+            int metros = Integer.parseInt(datos[5]);
+            int alquiler = Integer.parseInt(datos[6]);
             String contacto =  datos[7];
-            return new PisoListModel(ciudad, calle, portal, piso, contacto, habitaciones, m2, alquiler);
+            return new PisoListModel(ciudad, calle, portal, piso, metros, alquiler, habitaciones, contacto);
         }catch (Exception e){
             return null;
         }

@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonGoogleMaps"
+        android:id="@+id/buttonConfirmarBorrado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#54FF5B"

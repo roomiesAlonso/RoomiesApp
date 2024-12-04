@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,8 @@ import com.rodriguezalonso.rommiesapp.R;
 import com.rodriguezalonso.rommiesapp.logica.Usuario;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AppActivity extends AppCompatActivity {
     private Button buttonMenu;
@@ -61,6 +65,18 @@ public class AppActivity extends AppCompatActivity {
             adapter = new PisoAdapter(this, listaPisos);
             listViewPisos.setAdapter(adapter);
         }, 4000);
+
+        /**
+         * Método onClick() de cada elemento del ListView
+         *  para sacar la dirección del piso y abrir Google Maps
+         */
+        listViewPisos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int posicion, long id) {
+                PisoListModel pisoSeleccionado = listaPisos.get(posicion);
+                abrirGoogleMaps(pisoSeleccionado.getDireccion());
+            }
+        });
     }
 
     /**
@@ -187,7 +203,7 @@ public class AppActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.prompt_confirm_delete, null);
         builder.setView(v);
         Button cancelar = v.findViewById(R.id.buttonCancelarLI);
-        Button aceptar = v.findViewById(R.id.buttonGoogleMaps);
+        Button aceptar = v.findViewById(R.id.buttonConfirmarBorrado);
         cancelar.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -251,25 +267,37 @@ public class AppActivity extends AppCompatActivity {
     }
 
     /**
-     * Método onClick() para abrir un prompt antes de borrar la cuenta
-     * El prompt es a modo de confirmación ante un cambio irreversible
+     * Método onClick() para abrir un prompt con opciones para
+     * filtrar los pisos según metros cuadrados, precio de alquiler
+     * o número de habitaciones
      * @param view
      */
-    public void promptAbrirPiso(View view) {
-        PisoListModel piso = new PisoListModel();
+    public void promptAbrirFiltros(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AppActivity.this);
         LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.prompt_piso, null);
+        View v = inflater.inflate(R.layout.prompt_filtros, null);
         builder.setView(v);
-        Button googleMaps = v.findViewById(R.id.buttonGoogleMaps);
-        googleMaps.setOnClickListener(
+        RadioButton radioButtonMetros = v.findViewById(R.id.radioButtonMetros);
+        RadioButton radioButtonHabitaciones = v.findViewById(R.id.radioButtonHabitaciones);
+        RadioButton radioButtonAlquiler = v.findViewById(R.id.radioButtonAlquiler);
+        Button aplicarFiltros = v.findViewById(R.id.buttonAplicarFiltros);
+        aplicarFiltros.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*TO DO
-                        String direccion = piso.getCiudad() + ", " + piso.getCalle() + " " + piso.getPortal();
-                        abrirGoogleMaps(direccion);
-                         */
+                        //TO DO
+                        if(radioButtonAlquiler.isSelected()){
+                            ordenarAlquiler(listaPisos);
+                            dialog.dismiss();
+                        } else if(radioButtonHabitaciones.isSelected()){
+                            ordenarHabitaciones(listaPisos);
+                            dialog.dismiss();
+                        } else if(radioButtonMetros.isSelected()){
+                            ordenarMetros(listaPisos);
+                            dialog.dismiss();
+                        } else{
+                            dialog.dismiss();
+                        }
                     }
                 }
         );
@@ -277,6 +305,10 @@ public class AppActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Método para abrir la aplicación de Google Maps con la dirección del piso seleccionado
+     * @param direccion
+     */
     public void abrirGoogleMaps(String direccion) {
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -285,5 +317,38 @@ public class AppActivity extends AppCompatActivity {
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(mapIntent);
         }
+    }
+
+    /**
+     * Métodos para ordenar los pisos en función de los filtros aplicados
+     * @param listaPisos
+     * @return listaPisos ya ordenada
+     */
+    //Ordena los pisos de menor a mayor coste de alquiler
+    public static void ordenarAlquiler(ArrayList<PisoListModel> listaPisos) {
+        Collections.sort(listaPisos, new Comparator<PisoListModel>() {
+            @Override
+            public int compare(PisoListModel p1, PisoListModel p2) {
+                return Integer.compare(p1.getAlquiler(), p2.getAlquiler());
+            }
+        });
+    }
+    //Ordena los pisos de mayor a menor número de habitaciones
+    public static void ordenarHabitaciones(ArrayList<PisoListModel> listaPisos) {
+        Collections.sort(listaPisos, new Comparator<PisoListModel>() {
+            @Override
+            public int compare(PisoListModel p1, PisoListModel p2) {
+                return Integer.compare(p2.getHabitaciones(), p1.getHabitaciones());
+            }
+        });
+    }
+    //Ordena los pisos de mayor a menor superficie
+    public static void ordenarMetros(ArrayList<PisoListModel> listaPisos) {
+        Collections.sort(listaPisos, new Comparator<PisoListModel>() {
+            @Override
+            public int compare(PisoListModel p1, PisoListModel p2) {
+                return Integer.compare(p2.getMetros(), p1.getMetros());
+            }
+        });
     }
 }
