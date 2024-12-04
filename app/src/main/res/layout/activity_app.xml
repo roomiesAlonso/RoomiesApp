@@ -154,10 +154,10 @@
         android:id="@+id/buttonFiltros"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_perfil"
-        android:text="1"
+        android:background="@drawable/filtro"
+        android:onClick="promptAbrirFiltros"
         app:layout_constraintBottom_toTopOf="@+id/guideline30"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline25"
         app:layout_constraintStart_toStartOf="@+id/guideline38"
         app:layout_constraintTop_toTopOf="@+id/guideline27" />
 </androidx.constraintlayout.widget.ConstraintLayout>
