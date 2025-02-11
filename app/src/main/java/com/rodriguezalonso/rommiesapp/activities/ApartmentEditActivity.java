@@ -16,7 +16,8 @@ import com.rodriguezalonso.rommiesapp.logica.PisoListModel;
 public class ApartmentEditActivity extends AppCompatActivity {
     private String correo="", idPiso="";
     private PisoListModel piso=null;
-    private EditText editTextCiudad, editTextDireccion, editTextNHabitaciones;
+    private EditText editTextCiudad, editTextCalle, editTextNHabitaciones,
+            editTextPortal, editTextPiso, editTextAlquiler, editTextMetros;
     private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +32,12 @@ public class ApartmentEditActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         editTextCiudad = findViewById(R.id.editTextCiudadAE);
-        editTextDireccion = findViewById(R.id.editTextCalleAE);
+        editTextCalle = findViewById(R.id.editTextCalleAE);
         editTextNHabitaciones = findViewById(R.id.editTextHabitacionesAE);
+        editTextPortal = findViewById(R.id.editTextPortalAE);
+        editTextPiso = findViewById(R.id.editTextPisoAE);
+        editTextMetros = findViewById(R.id.editTextMetrosAE);
+        editTextAlquiler = findViewById(R.id.editTextAlquilerAE);
 
         cargarDatosPiso();
     }
@@ -44,8 +49,12 @@ public class ApartmentEditActivity extends AppCompatActivity {
     public void cargarDatosPiso(){
         if(piso!=null){
             editTextCiudad.setText(piso.getCiudad());
-            editTextDireccion.setText(piso.getDireccion());
+            editTextCalle.setText(piso.getCalle());
             editTextNHabitaciones.setText(piso.getHabitaciones());
+            editTextPortal.setText((piso.getPortal()));
+            editTextPiso.setText(piso.getPiso());
+            editTextAlquiler.setText(piso.getAlquiler());
+            editTextMetros.setText(piso.getMetros());
         }
     }
 
@@ -92,8 +101,12 @@ public class ApartmentEditActivity extends AppCompatActivity {
      */
     private boolean comprobarCampos(){
         if(editTextCiudad.getText().toString()==null ||
-                editTextDireccion.getText().toString()==null ||
-                editTextNHabitaciones.getText().toString()==null){
+                editTextCalle.getText().toString()==null ||
+                editTextNHabitaciones.getText().toString()==null ||
+                editTextPortal.getText().toString()==null ||
+                editTextPiso.getText().toString()==null ||
+                editTextMetros.getText().toString()==null ||
+                editTextAlquiler.getText().toString()==null){
             return false;
         } else{
             return true;
@@ -107,7 +120,11 @@ public class ApartmentEditActivity extends AppCompatActivity {
      */
     private String crearPiso(){
         return editTextCiudad.getText().toString() + ";" +
-                editTextDireccion.getText().toString() + ";" +
-                editTextNHabitaciones.getText().toString();
+                editTextCalle.getText().toString() + ";" +
+                editTextPortal.getText().toString() + ";" +
+                editTextPiso.getText().toString() + ";" +
+                editTextNHabitaciones.getText().toString() + ";" +
+                editTextMetros.getText().toString() + ";" +
+                editTextAlquiler.getText().toString();
     }
 }

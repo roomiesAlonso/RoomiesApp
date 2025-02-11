@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ public class AppActivity extends AppCompatActivity {
     private EditText editTextCiudad;
     private ListView listViewPisos;
     private PisoAdapter adapter;
-    private ArrayList<PisoListModel> listaPisos = new ArrayList<>();
+    private ArrayList<PisoListModel> listaPisos = new ArrayList<>(), listaFiltrada;
     private FirebaseDatabase database;
     private FirebaseUser user;
     private Usuario usuario=null;
@@ -48,6 +49,7 @@ public class AppActivity extends AppCompatActivity {
     private String idUsuario="", idPiso=null, correo="";
     private PisoListModel pisoUsuario=null;
     private Activity context=null;
+    private boolean filtroAlquiler=false, filtroMetros=false, filtroHabitaciones=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,7 @@ public class AppActivity extends AppCompatActivity {
         correo=user.getEmail();
         usuario = getUsuario(correo);
         cargarPisosFirebase();
+        listaFiltrada=listaPisos;
 
         new Handler().postDelayed(() -> {
             adapter = new PisoAdapter(this, listaPisos);
@@ -75,7 +78,7 @@ public class AppActivity extends AppCompatActivity {
         listViewPisos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int posicion, long id) {
-                PisoListModel pisoSeleccionado = listaPisos.get(posicion);
+                PisoListModel pisoSeleccionado = listaFiltrada.get(posicion);
                 abrirGoogleMaps(pisoSeleccionado.getDireccion());
             }
         });
@@ -144,19 +147,28 @@ public class AppActivity extends AppCompatActivity {
     }
 
     /**
-     * Método onClick() para mostrar una lista de pisos en función de la ciudad indicada
+     * Método onClick() para mostrar una lista de pisos en función de los filtros aplicados
      * @param view
      */
     public void mostrarPisos(View view) {
         String ciudad = editTextCiudad.getText().toString();
+        /*listaFiltrada = new ArrayList<>();
+        if(filtroAlquiler){
+            ordenarAlquiler();
+        } else if(filtroHabitaciones){
+            ordenarHabitaciones();
+        } else if(filtroMetros){
+            ordenarMetros();
+        }*/
         if(ciudad!=null){
-            ArrayList<PisoListModel> listaFiltrada = new ArrayList<>();
             for (PisoListModel plm:listaPisos){
                 if (plm.getCiudad().equals(ciudad))
                     listaFiltrada.add(plm);
             }
-            adapter = new PisoAdapter(this, listaFiltrada);
-            listViewPisos.setAdapter(adapter);
+            actualizarPisos(listaFiltrada);
+        } else{
+            listaFiltrada=listaPisos;
+            actualizarPisos(listaFiltrada);
         }
     }
 
@@ -220,7 +232,7 @@ public class AppActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        borrarDatos();
+                        borrarDatosUsuario();
                     }
                 }
         );
@@ -232,11 +244,11 @@ public class AppActivity extends AppCompatActivity {
      * Método para borrar los datos del usuario antes de borrar la cuenta definitivamente
      * Primero borra los datos del perfil y luego, si existe, los datos del piso
      */
-    public void borrarDatos(){
+    public void borrarDatosUsuario(){
         if(user!=null){
             DatabaseReference userRef = database.getReference("Usuarios").child(idUsuario);
-            userRef.removeValue().addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful())
+            userRef.removeValue().addOnCompleteListener(task2 -> {
+            if (task2.isSuccessful())
                 borrarDatosPiso();
             });
         }
@@ -247,8 +259,8 @@ public class AppActivity extends AppCompatActivity {
     public void borrarDatosPiso() {
         if (idPiso != null) {
             DatabaseReference apartmentRef = database.getReference("Pisos").child(idPiso);
-            apartmentRef.removeValue().addOnCompleteListener(task2 -> {
-                if (task2.isSuccessful()) {
+            apartmentRef.removeValue().addOnCompleteListener(task1 -> {
+                if (task1.isSuccessful()) {
                     borrarCuenta();
                 }
             });
@@ -276,41 +288,56 @@ public class AppActivity extends AppCompatActivity {
      * o número de habitaciones
      * @param view
      */
-    public void promptAbrirFiltros(View view) {
+    /*public void promptAbrirFiltros(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AppActivity.this);
         LayoutInflater inflater = getLayoutInflater();
         View v = inflater.inflate(R.layout.prompt_filtros, null);
         builder.setView(v);
-        RadioButton radioButtonMetros = v.findViewById(R.id.radioButtonMetros);
-        RadioButton radioButtonHabitaciones = v.findViewById(R.id.radioButtonHabitaciones);
-        RadioButton radioButtonAlquiler = v.findViewById(R.id.radioButtonAlquiler);
+        RadioGroup radioGroupFiltros = v.findViewById(R.id.radioGroupFiltros);
+        //RadioButton radioButtonMetros = v.findViewById(R.id.radioButtonMetros);
+        //RadioButton radioButtonHabitaciones = v.findViewById(R.id.radioButtonHabitaciones);
+        //RadioButton radioButtonAlquiler = v.findViewById(R.id.radioButtonAlquiler);
         Button aplicarFiltros = v.findViewById(R.id.buttonAplicarFiltros);
         aplicarFiltros.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TO DO
-                        if(radioButtonAlquiler.isSelected()){
-                            ordenarAlquiler(listaPisos);
-                            actualizarPisos();
-                            dialog.dismiss();
-                        } else if(radioButtonHabitaciones.isSelected()){
-                            ordenarHabitaciones(listaPisos);
-                            dialog.dismiss();
-                        } else if(radioButtonMetros.isSelected()){
-                            ordenarMetros(listaPisos);
-                            dialog.dismiss();
-                        } else{
-                            dialog.dismiss();
-                        }
+                        radioGroupFiltros.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                                filtroMetros=false;
+                                filtroHabitaciones=false;
+                                filtroAlquiler=false;
+                                switch (checkedId){
+                                    case R.id.radioButtonAlquiler:
+                                        filtroAlquiler=true;
+                                        break;
+                                    case R.id.radioButtonHabitaciones:
+                                        filtroHabitaciones=true;
+                                        break;
+                                    case R.id.radioButtonMetros:
+                                        filtroMetros=true;
+                                        break;
+                                }
+                            }
+                        });
+                        //filtroAlquiler=radioButtonAlquiler.isChecked();
+                        //filtroHabitaciones=radioButtonHabitaciones.isPressed();
+                        //filtroMetros=radioButtonMetros.isSelected();
+                        dialog.dismiss();
                     }
                 }
         );
         dialog = builder.create();
         dialog.show();
-    }
-    public void actualizarPisos(){
-        adapter = new PisoAdapter(this, listaPisos);
+    }*/
+
+    /**
+     * Método para actualizar el ListView con los pisos ordenados y filtrados
+     * @param listaFiltrada
+     */
+    public void actualizarPisos(ArrayList<PisoListModel>listaFiltrada){
+        adapter = new PisoAdapter(this, listaFiltrada);
         listViewPisos.setAdapter(adapter);
     }
 
@@ -330,12 +357,11 @@ public class AppActivity extends AppCompatActivity {
 
     /**
      * Métodos para ordenar los pisos en función de los filtros aplicados
-     * @param listaPisos
      * @return listaPisos ya ordenada
      */
     //Ordena los pisos de menor a mayor coste de alquiler
-    public static void ordenarAlquiler(ArrayList<PisoListModel> listaPisos) {
-        Collections.sort(listaPisos, new Comparator<PisoListModel>() {
+    public void ordenarAlquiler() {
+        Collections.sort(listaFiltrada, new Comparator<PisoListModel>() {
             @Override
             public int compare(PisoListModel p1, PisoListModel p2) {
                 return Integer.compare(p1.getAlquiler(), p2.getAlquiler());
@@ -343,8 +369,8 @@ public class AppActivity extends AppCompatActivity {
         });
     }
     //Ordena los pisos de mayor a menor número de habitaciones
-    public static void ordenarHabitaciones(ArrayList<PisoListModel> listaPisos) {
-        Collections.sort(listaPisos, new Comparator<PisoListModel>() {
+    public void ordenarHabitaciones() {
+        Collections.sort(listaFiltrada, new Comparator<PisoListModel>() {
             @Override
             public int compare(PisoListModel p1, PisoListModel p2) {
                 return Integer.compare(p2.getHabitaciones(), p1.getHabitaciones());
@@ -352,8 +378,8 @@ public class AppActivity extends AppCompatActivity {
         });
     }
     //Ordena los pisos de mayor a menor superficie
-    public static void ordenarMetros(ArrayList<PisoListModel> listaPisos) {
-        Collections.sort(listaPisos, new Comparator<PisoListModel>() {
+    public void ordenarMetros() {
+        Collections.sort(listaFiltrada, new Comparator<PisoListModel>() {
             @Override
             public int compare(PisoListModel p1, PisoListModel p2) {
                 return Integer.compare(p2.getMetros(), p1.getMetros());
